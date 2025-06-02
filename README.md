@@ -1,1 +1,2 @@
-[README.md](https://github.com/user-attachments/files/20555692/README.md)
+# Fasttrk Connect
+A lightweight AI callbot interface connected to your n8n automation.
