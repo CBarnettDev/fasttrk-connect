@@ -14,9 +14,10 @@
     "react-dom": "18.2.0",
     "twilio": "^4.12.0",
   },
-  "devDependencies": {
-    "@types/node": "^20.3.1",
-    "@types/react": "^18.2.6",
-    "typescript": "^5.0.4"
-  }
+ "devDependencies": {
+  "@types/node": "^20.3.1",
+  "@types/react": "^18.2.6",
+  "typescript": "^5.0.4",
+  "@types/twilio": "^3.45.3"
+}
 }
