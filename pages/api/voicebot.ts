@@ -30,15 +30,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('Content-Type', 'text/xml');
     res.status(200).send(twimlResponse.toString());
   } catch (err) {
-    console.error('❌ Twilio bot error:', err);
+    console.error('❌ Voicebot Error:', err);
     const { twiml } = await import('twilio');
-    const errorTwiml = new twiml.VoiceResponse();
-    errorTwiml.say('Sorry, the verification bot encountered an error.');
-    res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(errorTwiml.toString());
-  }
-}
+    const VoiceResponse = twiml.VoiceResponse;
+    const errorTwiml = new VoiceResponse();
+    errorTwiml.say('Sorry, something went wrong. Please try again later.');
 
+    res.setHeader('Content-Type', 'text/xml');
     res.status(200).send(errorTwiml.toString());
   }
 }
