@@ -1,34 +1,42 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import nodemailer from 'nodemailer'
+
+// Replace with your preferred test values or use req.body
+const TEST_NAME = 'John Doe'
+const TEST_PHONE = '9518184668'
+const SCRIPT = `Hi, I'm calling to verify insurance for ${TEST_NAME}. Is this the correct line?`
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-
-  const { name, email, vehicle } = req.body;
-
-  if (!name || !email || !vehicle) {
-    return res.status(400).json({ error: 'Missing fields in request body' });
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const response = await fetch('https://devcam27.app.n8n.cloud/webhook/8888630f-b51fa-472f-b850-2513753716a6', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, email, vehicle })
-    });
+    // TODO: Use GPT + ElevenLabs in next step. For now, use placeholder
+    const audioUrl = 'https://fasttrk-31bea.web.app/audio/aria-verified-demo.mp3' // Put real MP3 here
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`n8n webhook failed: ${errorText}`);
-    }
+    // TODO: Trigger Twilio call
+    console.log(`Would call ${TEST_PHONE} and play: ${audioUrl}`)
 
-    return res.status(200).json({ success: true, message: 'Webhook triggered successfully' });
-  } catch (error) {
-    console.error('Webhook error:', error);
-    return res.status(500).json({ error: 'Failed to send request to n8n webhook', details: error.message });
+    // Email confirmation
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'fasttrk.bot@gmail.com',
+        pass: 'your-password-here' // Replace with real email pass or app password
+      }
+    })
+
+    await transporter.sendMail({
+      from: '"Fasttrk Bot" <fasttrk.bot@gmail.com>',
+      to: 'cameron@barnettmedias.com',
+      subject: 'Fasttrk Bot Triggered',
+      html: `<p>Bot called <strong>${TEST_PHONE}</strong> and played audio: <a href="${audioUrl}">Play MP3</a></p>`
+    })
+
+    return res.status(200).json({ success: true })
+  } catch (err: any) {
+    console.error('API verify error:', err)
+    return res.status(500).json({ error: err.message })
   }
 }
