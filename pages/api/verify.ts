@@ -12,9 +12,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const renterName = 'John Doe'
     const testPhone = '9518184668'
-    const script = `Hi, I'm calling to verify insurance for ${renterName}.`
+    const script = `Hi, I'm calling to verify insurance coverage for ${renterName}.`
 
-    // 🎤 Generate voice with ElevenLabs
+    // 🎤 Request voice from ElevenLabs
     const elevenResponse = await axios.post(
       'https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL/stream',
       {
@@ -32,19 +32,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     )
 
-    const audioBuffer = elevenResponse.data
-    const base64Audio = Buffer.from(audioBuffer).toString('base64')
+    const base64Audio = Buffer.from(elevenResponse.data).toString('base64')
     const audioUrl = `data:audio/mpeg;base64,${base64Audio}`
 
-    // 📧 Send Email via SendGrid with inline audio
+    // 📧 Email with inline playable voice
     const msg = {
-      to: process.env.FASTTRK_EMAIL!,
+      to: process.env.FASTTRK_EMAIL || 'founder@fasttrk.ai',
       from: 'no-reply@fasttrk.ai',
       subject: '✅ Fasttrk Bot Triggered',
       html: `
         <p><strong>Bot would call ${testPhone}</strong> and say:</p>
         <blockquote>${script}</blockquote>
-        <p><strong>Preview Audio:</strong></p>
+        <p><strong>Preview Voice:</strong></p>
         <audio controls src="${audioUrl}"></audio>
       `
     }
@@ -53,6 +52,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({ success: true })
   } catch (err: any) {
     console.error('❌ ERROR:', err.response?.data || err.message)
-    return res.status(500).json({ error: 'Bot failed to trigger' })
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
