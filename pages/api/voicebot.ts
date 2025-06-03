@@ -1,10 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import axios from 'axios'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { default: twilio } = await import('twilio');
-    const { VoiceResponse } = twilio.twiml;
+    const VoiceResponse = twilio.twiml.VoiceResponse;
 
     const script = `Hi, this is Turbo Rentals calling from Fort Lauderdale regarding one of your insurance policyholders. We’re verifying active coverage for John Smith, who plans to rent a Lamborghini Huracán for 3 days starting May 18, 2025. Does the policy cover liability extension, physical damage, theft, and vandalism? Please confirm that this coverage is valid for rental vehicles.`;
 
