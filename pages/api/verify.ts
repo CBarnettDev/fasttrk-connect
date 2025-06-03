@@ -1,10 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import nodemailer from 'nodemailer'
+import sgMail from '@sendgrid/mail'
 
-// Replace with your preferred test values or use req.body
-const TEST_NAME = 'John Doe'
-const TEST_PHONE = '9518184668'
-const SCRIPT = `Hi, I'm calling to verify insurance for ${TEST_NAME}. Is this the correct line?`
+sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -12,31 +9,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // TODO: Use GPT + ElevenLabs in next step. For now, use placeholder
-    const audioUrl = 'https://fasttrk-31bea.web.app/audio/aria-verified-demo.mp3' // Put real MP3 here
+    const renterName = 'John Doe'
+    const testPhone = '9518184668'
+    const script = `Hi, I'm calling to verify insurance for ${renterName}.`
 
-    // TODO: Trigger Twilio call
-    console.log(`Would call ${TEST_PHONE} and play: ${audioUrl}`)
+    // Log confirmation
+    console.log(`🚀 Bot would call ${testPhone} with: ${script}`)
 
-    // Email confirmation
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'fasttrk.bot@gmail.com',
-        pass: 'your-password-here' // Replace with real email pass or app password
-      }
-    })
-
-    await transporter.sendMail({
-      from: '"Fasttrk Bot" <fasttrk.bot@gmail.com>',
+    // Send confirmation email via SendGrid
+    const msg = {
       to: 'cameron@barnettmedias.com',
-      subject: 'Fasttrk Bot Triggered',
-      html: `<p>Bot called <strong>${TEST_PHONE}</strong> and played audio: <a href="${audioUrl}">Play MP3</a></p>`
-    })
+      from: 'no-reply@fasttrk.ai',
+      subject: '✅ Fasttrk Bot Triggered',
+      html: `<p>Bot would call <strong>${testPhone}</strong> and say:</p><blockquote>${script}</blockquote>`
+    }
 
-    return res.status(200).json({ success: true })
+    await sgMail.send(msg)
+
+    res.status(200).json({ success: true })
   } catch (err: any) {
-    console.error('API verify error:', err)
-    return res.status(500).json({ error: err.message })
+    console.error('❌ API error:', err)
+    res.status(500).json({ error: 'Internal server error' })
   }
 }
