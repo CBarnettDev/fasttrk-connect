@@ -1,7 +1,7 @@
 // File: /pages/api/voicebot.ts
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { VoiceResponse } from 'twilio';
+import VoiceResponse from 'twilio/lib/twiml/VoiceResponse';
 import axios from 'axios';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
