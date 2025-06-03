@@ -1,21 +1,16 @@
-import Head from 'next/head';
+// pages/index.tsx
 
 export default function Home() {
   return (
-    <div>
-      <Head>
-        <title>Fasttrk Connect</title>
-      </Head>
-      <main>
-        <h1>Welcome to Fasttrk Connect</h1>
-        <p>This is your dynamic AI verification bot interface. Ready to plug into n8n.</p>
-      <form method="POST" action="/api/verify">
-  <input name="name" placeholder="Name" />
-  <input name="email" placeholder="Email" />
-  <input name="vehicle" placeholder="Vehicle" />
-  <button type="submit">Trigger Bot</button>
-</form>
-      </main>
+    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Welcome to Fasttrk Connect</h1>
+      <p>This is your dynamic AI verification bot interface. Ready to plug into n8n.</p>
+      <form method="POST" action="/api/verify" style={{ marginTop: '1rem' }}>
+        <input type="text" name="name" placeholder="Name" required style={{ marginRight: '1rem' }} />
+        <input type="email" name="email" placeholder="Email" required style={{ marginRight: '1rem' }} />
+        <input type="text" name="vehicle" placeholder="Vehicle" required style={{ marginRight: '1rem' }} />
+        <button type="submit">Trigger Bot</button>
+      </form>
     </div>
   );
 }
