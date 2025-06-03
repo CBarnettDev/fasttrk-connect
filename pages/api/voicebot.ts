@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const script = `Hi, this is Turbo Rentals calling from Fort Lauderdale regarding one of your insurance policyholders. We're verifying active coverage for John Smith, who plans to rent a Lamborghini Huracán for 3 days starting May 18, 2025. Does the policy cover: liability extension, physical damage, theft, and vandalism? Please confirm this is valid for rental vehicles.`
 
     const response = await axios.post(
-      'https://api.elevenlabs.io/v1/text-to-speech/{EXAVITQu4vr4xnSDxMaL}/stream',
+      'https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL/stream',
       { text: script, model_id: 'eleven_monolingual_v1' },
       {
         headers: {
