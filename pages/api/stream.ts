@@ -1,54 +1,60 @@
-import { Server } from 'ws'
-import type { NextApiRequest, NextApiResponse } from 'next'
+// pages/api/stream.ts
+
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { Server as WebSocketServer } from 'ws';
+import type { WebSocket } from 'ws';
+import http from 'http';
 
 export const config = {
   api: {
     bodyParser: false,
   },
-}
+};
 
-let wss: Server | undefined
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!res.socket?.server?.wss) {
-    wss = new Server({ noServer: true })
-
-    res.socket.server.on('upgrade', (req, socket, head) => {
-      if (req.url === '/api/stream') {
-        wss?.handleUpgrade(req, socket, head, (ws) => {
-          wss?.emit('connection', ws, req)
-        })
-      }
-    })
-
-    wss.on('connection', (ws) => {
-      console.log('🧠 Connected to Twilio Media Stream')
-
-      ws.on('message', async (msg) => {
-        const payload = JSON.parse(msg.toString())
-
-        if (payload.event === 'start') {
-          console.log('Stream started')
-        }
-
-        if (payload.event === 'media') {
-          const audio = payload.media.payload
-          // TODO: send to transcriber, GPT, ElevenLabs, and return speech
-        }
-
-        if (payload.event === 'stop') {
-          console.log('Stream ended')
-          ws.close()
-        }
-      })
-
-      ws.on('close', () => {
-        console.log('WebSocket closed')
-      })
-    })
-
-    res.socket.server.wss = wss
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  if (!res.socket?.server) {
+    res.status(500).end('Internal Server Error');
+    return;
   }
 
-  res.end()
-}
+  if (!(res.socket.server as any).wss) {
+    const server = res.socket.server as any;
+
+    const wss = new WebSocketServer({ noServer: true });
+
+    server.on('upgrade', (request: http.IncomingMessage, socket, head) => {
+      const { url } = request;
+      if (url?.includes('/api/stream')) {
+        wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+          wss.emit('connection', ws, request);
+        });
+      }
+    });
+
+    wss.on('connection', (ws: WebSocket) => {
+      ws.on('message', (msg: Buffer) => {
+        const message = msg.toString();
+
+        if (message.includes('start')) {
+          console.log('Twilio stream started');
+        } else if (message.includes('media')) {
+          const parsed = JSON.parse(message);
+          const audio = parsed.media.payload;
+          // TODO: Handle live audio stream (e.g., transcription, analysis, etc.)
+        } else if (message.includes('stop')) {
+          console.log('Twilio stream stopped');
+        }
+      });
+
+      ws.on('close', () => {
+        console.log('WebSocket connection closed');
+      });
+    });
+
+    (res.socket.server as any).wss = wss;
+  }
+
+  res.end();
+};
+
+export default handler;
