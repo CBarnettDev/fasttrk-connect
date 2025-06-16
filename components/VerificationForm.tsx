@@ -33,9 +33,7 @@ export default function InsuranceVerificationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     setStatus("loading");
-
     try {
      const res = await fetch(
   "https://fast-trk-l744i.ondigitalocean.app/start-call",
