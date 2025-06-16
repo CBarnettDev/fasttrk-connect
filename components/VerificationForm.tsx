@@ -32,7 +32,8 @@ export default function InsuranceVerificationForm() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); 
+    
     setStatus("loading");
     try {
      const res = await fetch(
