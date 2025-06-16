@@ -84,7 +84,7 @@ export default function InsuranceVerificationForm() {
           value={formData.vehicleName}
           onChange={handleChange}
           required
-          style={styles.input}
+          style={{ width: "100%", padding: "10px 12px", marginBottom: "10px", border: "none", borderRadius: "8px", backgroundColor: "#2b2b2b", color: "#fff", fontSize: "14px" }}
         >
           <option value="">Select Vehicle</option>
           <option>22 Cadillac Escalade - $75k</option>
@@ -175,6 +175,16 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
+  },
+  dropdown:{
+width: "100%",
+    padding: "8px 12px",
+    marginBottom: "10px",
+    border: "none",
+    borderRadius: "8px",
+    backgroundColor: "#2b2b2b",
+    color: "#fff",
+    fontSize: "14px",
   },
   form: {
     backgroundColor: "rgba(26, 26, 26, 0.75)",
