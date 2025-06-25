@@ -36,14 +36,14 @@ export default function InsuranceVerificationForm() {
 
     setStatus("loading");
     try {
-   const res = await fetch(
-  "https://fast-trk-l744i.ondigitalocean.app/start-call",
-  {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
-  }
-);
+      const res = await fetch(
+        "https://fast-trk-l744i.ondigitalocean.app/start-call",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (res.ok) {
         setStatus("success");
@@ -101,19 +101,19 @@ export default function InsuranceVerificationForm() {
           }}
         >
           <option value="">Select Vehicle</option>
-          <option>22 Cadillac Escalade $75k</option>
-          <option>24 Cadillac Escalade $90k</option>
-          <option>21 Mercedes Maybach S580 $150k</option>
-          <option>22 Mercedes Maybach GLS SUV $150k</option>
-          <option>25 Mercedes Maybach GLS SUV $200k</option>
-          <option>20 Mercedes G63 Satin Olive/Red $150k</option>
-          <option>20 Lamborghini Huracan Evo $275k</option>
-          <option>20 Lamborghini Huracan Evo $275k</option>
-          <option>20 Lamborghini Urus $200k</option>
-          <option>24 Lamborghini Urus S $280k</option>
-          <option>25 Corvette C8 $80k</option>
-          <option>25 Corvette z06</option>
-          <option>24 Porsche 911 Carrera T</option>
+          <option>2022 Cadillac Escalade $75k</option>
+          <option>2024 Cadillac Escalade $90k</option>
+          <option>2021 Mercedes Maybach S580 $150k</option>
+          <option>2022 Mercedes Maybach GLS $150k</option>
+          <option>2025 Mercedes Maybach GLS $200k</option>
+          <option>2020 Mercedes G63 $150k</option>
+          <option>2020 Lamborghini Huracan Evo $275k</option>
+          <option>2020 Lamborghini Huracan Evo $275k</option>
+          <option>2020 Lamborghini Urus $200k</option>
+          <option>2024 Lamborghini Urus S $280k</option>
+          <option>2025 Corvette C8 $80k</option>
+          <option>2025 Corvette z06 $125k</option>
+          <option>2024 Porsche Nine Eleven Carrera T $150k</option>
         </select>
         <input
           type="date"
