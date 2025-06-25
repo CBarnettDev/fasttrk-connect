@@ -112,8 +112,9 @@ export default function InsuranceVerificationForm() {
           <option>2020 Lamborghini Urus $200k</option>
           <option>2024 Lamborghini Urus S $280k</option>
           <option>2025 Corvette C8 $80k</option>
-          <option>2025 Corvette z06 $125k</option>
-          <option>2024 Porsche Nine Eleven Carrera T $150k</option>
+          <option>2025 Corvette z06 $150k</option>
+          <option>2024 Porsche 911 Carrera T $150k</option>
+          <option>2023 Escalade V $120k</option>
         </select>
         <input
           type="date"
